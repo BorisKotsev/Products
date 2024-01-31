@@ -1,0 +1,37 @@
+#pragma once
+
+#include "Engine.h"
+#include "InputField.h"
+
+class Board
+{
+public:
+	Board();
+	~Board();
+
+	void init();
+	void run();
+	void drawZones();
+	void destroy();
+
+private:
+	SDL_Texture* m_background;
+
+	void loadZones();
+	void loadProducts();
+	void changeTexture(DrawableTwoTextures& obj);
+
+	vector <DrawableTwoTextures> m_zones;
+
+	Drawable m_searchBox;
+	Drawable m_resetBox;
+
+	map<string, int> m_products;
+
+	InputField m_productField;
+
+	string m_productToSearch;
+
+	void searchProduct(string product);
+	void resetAll();
+};
