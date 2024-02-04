@@ -50,7 +50,7 @@ struct int2
 		x *= a.x;
 		y *= a.y;
 
-		return *this; //Returns instance of the current class (After the modifications)
+		return *this; 
 	}
 
 	int2 operator/(int2 a)
@@ -88,7 +88,6 @@ struct int2
 
 struct float2
 {
-	//!!!IMPORTANT!!!
 	float x;
 	float y; 
 
@@ -121,7 +120,7 @@ struct float2
 		x *= a.x;
 		y *= a.y;
 
-		return *this; //Returns instance of the current class (After the modifications)
+		return *this;
 	}
 
 	float2 operator/(float2 a)
@@ -160,8 +159,8 @@ struct float2
 enum class FONT
 {
 	NONE = 0,
-	ARCADE_CLASSIC = 1, // used in MonTu
-	ADVENT_PRO = 2 // used in Raven
+	ARCADE_CLASSIC = 1,
+	ADVENT_PRO = 2 
 };
 
 enum class COLOR

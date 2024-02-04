@@ -5,10 +5,12 @@ extern World world;
 
 InputField::InputField()
 {
+
 }
 
 InputField::~InputField()
 {
+
 }
 
 void InputField::init(string configFile, string folder)
@@ -85,7 +87,6 @@ void InputField::update()
 	{
 		pair<int2, SDL_Texture*> value = m_writer->getText(m_value, FONT::ADVENT_PRO, COLOR::DARK, 30);
 
-		// Destroy the old texture before getting the new one
 		if (m_textUI.texture != nullptr)
 		{
 			SDL_DestroyTexture(m_textUI.texture);
@@ -116,7 +117,7 @@ void InputField::setText(string text)
 {
 	if (text == "")
 	{
-		text = "0";
+		text = char(32);
 	}
 	if (m_value != text)
 	{

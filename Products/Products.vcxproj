@@ -26,6 +26,7 @@
     <ClInclude Include="..\include\IFade.h" />
     <ClInclude Include="..\include\InputField.h" />
     <ClInclude Include="..\include\InputManager.h" />
+    <ClInclude Include="..\include\PopUp.h" />
     <ClInclude Include="..\include\Presenter.h" />
     <ClInclude Include="..\include\SoundManager.h" />
     <ClInclude Include="..\include\State.h" />
@@ -41,6 +42,7 @@
     <ClCompile Include="..\src\InputField.cpp" />
     <ClCompile Include="..\src\InputManager.cpp" />
     <ClCompile Include="..\src\main.cpp" />
+    <ClCompile Include="..\src\PopUp.cpp" />
     <ClCompile Include="..\src\Presenter.cpp" />
     <ClCompile Include="..\src\SoundManager.cpp" />
     <ClCompile Include="..\src\State.cpp" />

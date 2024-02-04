@@ -45,10 +45,12 @@ bool collRectRect(SDL_Rect rect1, SDL_Rect rect2)
 	}
 }
 
-void toLower(string& str)
+string toLower(string& str)
 {
 	for (int i = 0; i < str.length(); i++)
 	{
 		str[i] = tolower(str[i]);
 	}
+
+	return str;
 }

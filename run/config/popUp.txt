@@ -1,0 +1,2 @@
+PopUpInfo: PopUp.bmp 610 380 700 300
+OkBtnRect: 835 540 250 120

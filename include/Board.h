@@ -2,6 +2,7 @@
 
 #include "Engine.h"
 #include "InputField.h"
+#include "PopUp.h"
 
 class Board
 {
@@ -32,6 +33,8 @@ private:
 
 	string m_productToSearch;
 
-	void searchProduct(string product);
+	int searchProduct(string product);
 	void resetAll();
+
+	PopUp* m_popUp;
 };

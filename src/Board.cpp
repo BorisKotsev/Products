@@ -25,7 +25,7 @@ void Board::init()
 
 	stream.open(CONFIG_FOLDER + "boardInit.txt");
 
-    stream >> tmp >> backgorundImg;
+	stream >> tmp >> backgorundImg;
 	stream >> tmp >> m_searchBox.rect.x >> m_searchBox.rect.y >> m_searchBox.rect.w >> m_searchBox.rect.h;
 	stream >> tmp >> search;
 	stream >> tmp >> m_resetBox.rect.x >> m_resetBox.rect.y >> m_resetBox.rect.w >> m_resetBox.rect.h;
@@ -54,14 +54,34 @@ void Board::run()
 	drawObject(m_resetBox);
 
 	drawZones();
-	
+
 	if (isMouseInRect(InputManager::m_mouseCoor, m_searchBox.rect) && InputManager::isMousePressed())
 	{
 		m_productToSearch = m_productField.getValue();
 
-		toLower(m_productToSearch);
+		if (m_productToSearch[0] == char(32))
+		{
+			m_productToSearch.erase(0, 1);
+		}
 
-		searchProduct(m_productToSearch);
+		if (searchProduct(toLower(m_productToSearch)) == -1)
+		{
+			m_popUp = new PopUp();
+
+			m_popUp->init();
+		}
+	}
+
+	if (m_popUp != nullptr)
+	{
+		m_popUp->run();
+
+		if (isMouseInRect(InputManager::m_mouseCoor, m_popUp->m_okButton) && InputManager::isMousePressed())
+		{
+			m_popUp->destroy();
+			delete m_popUp;
+			m_popUp = nullptr;
+		}
 	}
 
 	if (isMouseInRect(InputManager::m_mouseCoor, m_resetBox.rect) && InputManager::isMousePressed())
@@ -81,7 +101,7 @@ void Board::run()
 			m_productField.stopInput();
 		}
 	}
-	
+
 	m_productField.setText(m_productField.getValue());
 	m_productField.update();
 	m_productField.draw();
@@ -113,7 +133,7 @@ void Board::loadZones()
 	while (!stream.eof())
 	{
 		DrawableTwoTextures _zone;
-		
+
 		stream >> tmp >> _zone.rect.x >> _zone.rect.y >> _zone.rect.w >> _zone.rect.h;
 
 		_zone.texture = loadTexture(NORMAL_FOLDER + tmp + ".bmp");
@@ -155,15 +175,17 @@ void Board::changeTexture(DrawableTwoTextures& obj)
 	obj.texture2 = tmp;
 }
 
-void Board::searchProduct(string product)
+int Board::searchProduct(string product)
 {
-	for (const auto& [key, value] : m_products) 
+	for (const auto& [key, value] : m_products)
 	{
 		if (product == key)
 		{
 			changeTexture(m_zones[value - 1]);
+			return 1;
 		}
 	}
+	return -1;
 }
 
 void Board::resetAll()
