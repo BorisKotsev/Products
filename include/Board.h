@@ -26,6 +26,7 @@ private:
 
 	Drawable m_searchBox;
 	Drawable m_resetBox;
+	DrawableTwoTextures m_searchBoxText;
 
 	map<string, int> m_products;
 

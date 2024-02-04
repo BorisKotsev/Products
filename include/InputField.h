@@ -27,8 +27,8 @@ public:
 	bool readsInput();
 
 	SDL_Rect getRect();
-private:
 
+private:
 	string m_value;
 	string m_displayText;
 
@@ -36,9 +36,9 @@ private:
 
 	bool m_readInput;
 
-	SDL_Rect m_rect;
-
 	Drawable m_textUI;
+
+	SDL_Rect m_rect;
 
 	Writer* m_writer;
 };

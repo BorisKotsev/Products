@@ -21,7 +21,7 @@ void Board::init()
 {
 	fstream stream;
 
-	string backgorundImg, tmp, search, productField, reset;
+	string backgorundImg, tmp, search, productField, reset, searchBox;
 
 	stream.open(CONFIG_FOLDER + "boardInit.txt");
 
@@ -31,6 +31,7 @@ void Board::init()
 	stream >> tmp >> m_resetBox.rect.x >> m_resetBox.rect.y >> m_resetBox.rect.w >> m_resetBox.rect.h;
 	stream >> tmp >> reset;
 	stream >> tmp >> productField;
+	stream >> tmp >> searchBox >> m_searchBoxText.rect.x >> m_searchBoxText.rect.y >> m_searchBoxText.rect.w >> m_searchBoxText.rect.h;
 
 	stream.close();
 
@@ -40,6 +41,7 @@ void Board::init()
 
 	m_searchBox.texture = loadTexture(search);
 	m_resetBox.texture = loadTexture(reset);
+	m_searchBoxText.texture = loadTexture(searchBox);
 
 	loadProducts();
 
@@ -70,6 +72,10 @@ void Board::run()
 
 			m_popUp->init();
 		}
+
+		changeTexture(m_searchBoxText);
+		string str(1, 32);
+		m_productField.setText(str);
 	}
 
 	if (m_popUp != nullptr)
@@ -93,6 +99,8 @@ void Board::run()
 	{
 		if (isMouseInRect(InputManager::m_mouseCoor, m_productField.getRect()))
 		{
+			changeTexture(m_searchBoxText);
+
 			m_productField.readInput();
 			world.m_inputManager.resetText(m_productField.getValue());
 		}
@@ -105,6 +113,8 @@ void Board::run()
 	m_productField.setText(m_productField.getValue());
 	m_productField.update();
 	m_productField.draw();
+
+	drawObject(m_searchBoxText);
 }
 
 void Board::drawZones()

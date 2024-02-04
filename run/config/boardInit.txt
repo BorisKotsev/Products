@@ -4,3 +4,4 @@ SearchImg: Search.bmp
 ResetRect: 1085 900 250 120
 ResetImg: Reset.bmp
 ProductField: enterProduct.txt
+SearchBox: SearchBox.bmp 710 730 500 120
