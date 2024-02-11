@@ -95,7 +95,20 @@ bool isAnyKeyPressed()
 
 bool isKeyPressed(SDL_Scancode code)
 {
-	return InputManager::m_keyboardState[code];
+	static bool previousState[SDL_NUM_SCANCODES] = { false };
+	bool currentState = InputManager::m_keyboardState[code];
+
+	if (currentState && !previousState[code]) 
+	{
+		previousState[code] = true;
+		return true;
+	}
+	else if (!currentState && previousState[code]) 
+	{
+		previousState[code] = false;
+	}
+
+	return false;
 }
 
 string InputManager::getInputData()

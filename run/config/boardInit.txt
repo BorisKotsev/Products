@@ -1,7 +1,5 @@
 BackgoundImg: background.bmp
-SearchRect: 585 900 250 120
+SearchRect: 1545 900 250 125
 SearchImg: Search.bmp
-ResetRect: 1085 900 250 120
-ResetImg: Reset.bmp
 ProductField: enterProduct.txt
-SearchBox: SearchBox.bmp 710 730 500 120
+SearchBox: SearchBox.bmp

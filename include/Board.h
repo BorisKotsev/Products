@@ -25,7 +25,6 @@ private:
 	vector <DrawableTwoTextures> m_zones;
 
 	Drawable m_searchBox;
-	Drawable m_resetBox;
 	DrawableTwoTextures m_searchBoxText;
 
 	map<string, int> m_products;
@@ -38,4 +37,6 @@ private:
 	void resetAll();
 
 	PopUp* m_popUp;
+
+	bool m_draw = false;
 };

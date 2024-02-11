@@ -21,17 +21,15 @@ void Board::init()
 {
 	fstream stream;
 
-	string backgorundImg, tmp, search, productField, reset, searchBox;
+	string backgorundImg, tmp, search, productField, searchBox;
 
 	stream.open(CONFIG_FOLDER + "boardInit.txt");
 
 	stream >> tmp >> backgorundImg;
 	stream >> tmp >> m_searchBox.rect.x >> m_searchBox.rect.y >> m_searchBox.rect.w >> m_searchBox.rect.h;
 	stream >> tmp >> search;
-	stream >> tmp >> m_resetBox.rect.x >> m_resetBox.rect.y >> m_resetBox.rect.w >> m_resetBox.rect.h;
-	stream >> tmp >> reset;
 	stream >> tmp >> productField;
-	stream >> tmp >> searchBox >> m_searchBoxText.rect.x >> m_searchBoxText.rect.y >> m_searchBoxText.rect.w >> m_searchBoxText.rect.h;
+	stream >> tmp >> searchBox;
 
 	stream.close();
 
@@ -40,24 +38,26 @@ void Board::init()
 	loadZones();
 
 	m_searchBox.texture = loadTexture(search);
-	m_resetBox.texture = loadTexture(reset);
 	m_searchBoxText.texture = loadTexture(searchBox);
 
 	loadProducts();
 
 	m_productField.init(productField, "");
+	m_searchBoxText.rect = m_productField.getRect();
 }
 
 void Board::run()
 {
 	drawObject(m_background);
 
-	drawObject(m_searchBox);
-	drawObject(m_resetBox);
-
 	drawZones();
 
-	if (isMouseInRect(InputManager::m_mouseCoor, m_searchBox.rect) && InputManager::isMousePressed())
+	if (m_draw)
+	{
+		drawObject(m_searchBox);
+	}
+
+	if ((isMouseInRect(InputManager::m_mouseCoor, m_searchBox.rect) && InputManager::isMousePressed() && m_draw) || isKeyPressed(SDL_SCANCODE_RETURN))
 	{
 		m_productToSearch = m_productField.getValue();
 
@@ -74,8 +74,8 @@ void Board::run()
 		}
 
 		changeTexture(m_searchBoxText);
-		string str(1, 32);
-		m_productField.setText(str);
+			
+		m_draw = false;
 	}
 
 	if (m_popUp != nullptr)
@@ -90,16 +90,17 @@ void Board::run()
 		}
 	}
 
-	if (isMouseInRect(InputManager::m_mouseCoor, m_resetBox.rect) && InputManager::isMousePressed())
-	{
-		resetAll();
-	}
-
 	if (InputManager::isMousePressed())
 	{
 		if (isMouseInRect(InputManager::m_mouseCoor, m_productField.getRect()))
 		{
+			int tmp = searchProduct(toLower(m_productToSearch));
+			resetAll();
+			string str(1, 32);
+			m_productField.setText(str);
 			changeTexture(m_searchBoxText);
+			
+			m_draw = true;
 
 			m_productField.readInput();
 			world.m_inputManager.resetText(m_productField.getValue());
@@ -148,7 +149,7 @@ void Board::loadZones()
 
 		_zone.texture = loadTexture(NORMAL_FOLDER + tmp + ".bmp");
 
-		_zone.texture2 = loadTexture(RED_FOLDER + tmp + "Red.bmp");
+		_zone.texture2 = loadTexture(RED_FOLDER + tmp + ".bmp");
 
 		_zone.copy = _zone.texture;
 
@@ -190,7 +191,7 @@ int Board::searchProduct(string product)
 	for (const auto& [key, value] : m_products)
 	{
 		if (product == key)
-		{
+		{	
 			changeTexture(m_zones[value - 1]);
 			return 1;
 		}
@@ -200,8 +201,6 @@ int Board::searchProduct(string product)
 
 void Board::resetAll()
 {
-	m_productField.setText("");
-
 	for (int i = 0; i < m_zones.size(); i++)
 	{
 		m_zones[i].texture = m_zones[i].copy;
