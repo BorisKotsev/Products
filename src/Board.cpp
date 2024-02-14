@@ -44,6 +44,8 @@ void Board::init()
 
 	m_productField.init(productField, "");
 	m_searchBoxText.rect = m_productField.getRect();
+
+	m_temp = m_searchBoxText.texture;
 }
 
 void Board::run()
@@ -57,58 +59,72 @@ void Board::run()
 		drawObject(m_searchBox);
 	}
 
-	if ((isMouseInRect(InputManager::m_mouseCoor, m_searchBox.rect) && InputManager::isMousePressed() && m_draw) || isKeyPressed(SDL_SCANCODE_RETURN))
+	if (m_canClick)
 	{
-		m_productToSearch = m_productField.getValue();
-
-		if (m_productToSearch[0] == char(32))
+		if ((isMouseInRect(InputManager::m_mouseCoor, m_searchBox.rect) && InputManager::isMousePressed() && m_draw) || isKeyPressed(SDL_SCANCODE_RETURN))
 		{
-			m_productToSearch.erase(0, 1);
+			m_productToSearch = m_productField.getValue();
+
+			if (m_productToSearch[0] == char(32))
+			{
+				m_productToSearch.erase(0, 1);
+			}
+
+			if (searchProduct(toLower(m_productToSearch)) == -1)
+			{
+				m_popUp = new PopUp();
+
+				m_popUp->init();
+
+				m_canClick = false;
+			}
+
+			m_productField.setText(string(1, char(32)));
+
+			changeTexture(m_searchBoxText);
 		}
-
-		if (searchProduct(toLower(m_productToSearch)) == -1)
-		{
-			m_popUp = new PopUp();
-
-			m_popUp->init();
-		}
-
-		changeTexture(m_searchBoxText);
-			
-		m_draw = false;
 	}
 
 	if (m_popUp != nullptr)
 	{
 		m_popUp->run();
 
-		if (isMouseInRect(InputManager::m_mouseCoor, m_popUp->m_okButton) && InputManager::isMousePressed())
+		if (isMouseInRect(InputManager::m_mouseCoor, m_popUp->m_okButton) && InputManager::isMousePressed() || isKeyPressed(SDL_SCANCODE_RETURN))
 		{
+			m_canClick = true;
+
 			m_popUp->destroy();
 			delete m_popUp;
 			m_popUp = nullptr;
 		}
 	}
 
-	if (InputManager::isMousePressed())
+	if (m_canClick)
 	{
-		if (isMouseInRect(InputManager::m_mouseCoor, m_productField.getRect()))
+		if (InputManager::isMousePressed())
 		{
-			int tmp = searchProduct(toLower(m_productToSearch));
-			resetAll();
-			string str(1, 32);
-			m_productField.setText(str);
-			changeTexture(m_searchBoxText);
-			
-			m_draw = true;
+			if (isMouseInRect(InputManager::m_mouseCoor, m_productField.getRect()))
+			{
+				int tmp = searchProduct(toLower(m_productToSearch));
+				resetAll();
+				m_productField.setText(string(1, char(32)));
+				changeTexture(m_searchBoxText);
 
-			m_productField.readInput();
-			world.m_inputManager.resetText(m_productField.getValue());
+				m_draw = true;
+			
+				m_productField.readInput();
+				world.m_inputManager.resetText(m_productField.getValue());
+			}
+			else
+			{
+				m_productField.stopInput();
+			}
 		}
-		else
-		{
-			m_productField.stopInput();
-		}
+	}
+
+	if (m_searchBoxText.texture == m_temp)
+	{
+		m_draw = false;
 	}
 
 	m_productField.setText(m_productField.getValue());

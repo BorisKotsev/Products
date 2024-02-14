@@ -39,4 +39,8 @@ private:
 	PopUp* m_popUp;
 
 	bool m_draw = false;
+
+	bool m_canClick = true;
+
+	SDL_Texture* m_temp;
 };

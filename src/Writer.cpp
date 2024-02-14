@@ -36,7 +36,7 @@ pair<int2, SDL_Texture*> Writer::getText(string text, FONT fontName, COLOR color
 
 	const char* t = text.c_str();
 
-	SDL_Surface* surface = TTF_RenderText_Blended(font, t, m_colors.at(colorName));
+	SDL_Surface* surface = TTF_RenderUTF8_Blended(font, t, m_colors.at(colorName));
 	SDL_Texture* texture = SDL_CreateTextureFromSurface(m_renderer, surface);
 
 	int2 size;
@@ -56,7 +56,7 @@ void Writer::init(string configFile)
 	configFile = CONFIG_FOLDER + configFile;
 
 	m_arcadeClassicLocation = FONT_FOLDER + "ArcadeClassic.ttf";
-	m_adventProLocation = FONT_FOLDER + "AdventPro-Bold.ttf";
+	m_adventProLocation = FONT_FOLDER + "OpenSans-Regular.ttf"; //AdventPro-Bold.ttf OpenSans-Regular.ttf DejaVuSans.ttf
 
 	TTF_Font* m_font;
 
