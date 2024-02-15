@@ -20,19 +20,13 @@ pair<int2, SDL_Texture*> Writer::getText(string text, FONT fontName, COLOR color
 	TTF_Font* font;
 	switch (fontName)
 	{
-	case FONT::ARCADE_CLASSIC:
-		font = m_arcadeClassic.at(fontSize);
-		break;
-	case FONT::ADVENT_PRO:
-		font = m_adventPro.at(fontSize);
+	case FONT::FONT:
+		font = m_font.at(fontSize);
 		break;
 	default:
 		font = nullptr;
 	}
-	if (font == nullptr)
-	{
-		cout << "Font not found" << endl;
-	}
+	
 
 	const char* t = text.c_str();
 
@@ -55,18 +49,14 @@ void Writer::init(string configFile)
 {
 	configFile = CONFIG_FOLDER + configFile;
 
-	m_arcadeClassicLocation = FONT_FOLDER + "ArcadeClassic.ttf";
-	m_adventProLocation = FONT_FOLDER + "OpenSans-Regular.ttf"; //AdventPro-Bold.ttf OpenSans-Regular.ttf DejaVuSans.ttf
+	m_fontLocation = FONT_FOLDER + "Oswald-Regular.ttf"; //AdventPro-Bold.ttf OpenSans-Regular.ttf DejaVuSans.ttf
 
-	TTF_Font* m_font;
+	TTF_Font* _font;
 
 	for (int i = 11; i <= 72; i++)
 	{
-		m_font = TTF_OpenFont(m_arcadeClassicLocation.c_str(), i);
-		m_arcadeClassic.insert(pair<int, TTF_Font*>(i, m_font));
-
-		m_font = TTF_OpenFont(m_adventProLocation.c_str(), i);
-		m_adventPro.insert(pair<int, TTF_Font*>(i, m_font));
+		_font = TTF_OpenFont(m_fontLocation.c_str(), i);
+		m_font.insert(pair<int, TTF_Font*>(i, _font));
 	}
 
 	SDL_Color color;

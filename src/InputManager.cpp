@@ -26,7 +26,6 @@ void InputManager::handleInput()
 {
 	m_mouseIsPressed = false;
 
-	//Events for the mouse
 	while (SDL_PollEvent(&m_event))
 	{
 		switch (m_event.type)
@@ -45,24 +44,28 @@ void InputManager::handleInput()
 			}
 			break;
 		case SDL_TEXTINPUT:
-
-			if (m_event.type == SDL_KEYDOWN && m_event.key.keysym.sym == SDLK_BACKSPACE && m_textInput.length() > 0)
-			{
-				m_textInput = m_textInput.substr(0, m_textInput.length() - 1);
-			}
-			if (m_event.type == SDL_TEXTINPUT)
-			{
-				m_textInput += m_event.text.text;
-			}
+			m_textInput += m_event.text.text;
 			break;
+
 		case SDL_KEYDOWN:
-			if (m_event.type == SDL_KEYDOWN && m_event.key.keysym.sym == SDLK_BACKSPACE && m_textInput.length() > 0)
+			switch (m_event.key.keysym.sym) 
 			{
-				m_textInput = m_textInput.substr(0, m_textInput.length() - 1);
-			}
-			if (m_event.type == SDL_TEXTINPUT)
-			{
-				m_textInput += m_event.text.text;
+			case SDLK_BACKSPACE:
+				if (!m_textInput.empty()) 
+				{
+					int lastCharStart = m_textInput.size() - 1;
+
+					while (lastCharStart > 0 && (m_textInput[lastCharStart] & 0xC0) == 0x80) 
+					{
+						lastCharStart--;
+					}
+					m_textInput.erase(lastCharStart, m_textInput.size() - lastCharStart);
+				}
+				break;
+
+
+			default:
+				break;
 			}
 			break;
 		}

@@ -89,7 +89,7 @@ void Board::run()
 	{
 		m_popUp->run();
 
-		if (isMouseInRect(InputManager::m_mouseCoor, m_popUp->m_okButton) && InputManager::isMousePressed() || isKeyPressed(SDL_SCANCODE_RETURN))
+		if (isMouseInRect(InputManager::m_mouseCoor, m_popUp->m_okButton) && InputManager::isMousePressed())
 		{
 			m_canClick = true;
 
@@ -126,7 +126,7 @@ void Board::run()
 	{
 		m_draw = false;
 	}
-
+	
 	m_productField.setText(m_productField.getValue());
 	m_productField.update();
 	m_productField.draw();

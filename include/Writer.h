@@ -19,10 +19,8 @@ public:
 	void init(string config);
 
 private:
-	map<int, TTF_Font*> m_arcadeClassic;
-	map<int, TTF_Font*> m_adventPro;
+	map<int, TTF_Font*> m_font;
 	map<COLOR, SDL_Color> m_colors;
 
-	string m_arcadeClassicLocation;
-	string m_adventProLocation;
+	string m_fontLocation;
 };

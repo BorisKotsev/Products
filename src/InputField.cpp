@@ -85,7 +85,7 @@ void InputField::update()
 
 	if (m_value.length() > 0)
 	{
-		pair<int2, SDL_Texture*> value = m_writer->getText(m_value, FONT::ADVENT_PRO, COLOR::DARK, 30);
+		pair<int2, SDL_Texture*> value = m_writer->getText(m_value, FONT::FONT, COLOR::DARK, 30);
 
 		if (m_textUI.texture != nullptr)
 		{
@@ -121,13 +121,13 @@ void InputField::setText(string text)
 	}
 	if (m_value != text)
 	{
-		auto res = m_writer->getText(text, FONT::ADVENT_PRO, COLOR::LIGHT, 30);
+		auto res = m_writer->getText(text, FONT::FONT, COLOR::LIGHT, 30);
 		m_textUI.rect.x = m_rect.x + (m_rect.w - res.first.x) / 2;
 		m_textUI.rect.y = m_rect.y + (m_rect.h - res.first.y) / 2;
 		m_textUI.rect.w = res.first.x;
 		m_textUI.rect.h = res.first.y;
 		m_textUI.texture = res.second;
-
+			
 		m_value = text;
 	}
 }

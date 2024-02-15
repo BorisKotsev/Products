@@ -159,8 +159,7 @@ struct float2
 enum class FONT
 {
 	NONE = 0,
-	ARCADE_CLASSIC = 1,
-	ADVENT_PRO = 2 
+	FONT = 1
 };
 
 enum class COLOR
