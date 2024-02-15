@@ -182,17 +182,24 @@ void Board::loadProducts()
 	string key;
 
 	int value;
-
 	stream.open(CONFIG_FOLDER + "products.txt");
 
-	while (!stream.eof())
+	while (stream >> value) 
 	{
-		stream >> key >> value;
+		getline(stream >> ws, key);
+
+		key.erase(0, key.find_first_not_of(" \t\n\r"));
+		key.erase(key.find_last_not_of(" \t\n\r") + 1);
 
 		m_products[key] = value;
 	}
 
 	stream.close();
+
+	/*for (const auto& product : m_products)
+	{
+		cout << "Key: " << product.first << ", Value: " << product.second << endl;
+	}*/
 }
 
 void Board::changeTexture(DrawableTwoTextures& obj)

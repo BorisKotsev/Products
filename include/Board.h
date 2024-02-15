@@ -4,6 +4,10 @@
 #include "InputField.h"
 #include "PopUp.h"
 
+#include <string>
+#include <algorithm>
+
+
 class Board
 {
 public:
