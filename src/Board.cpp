@@ -61,27 +61,33 @@ void Board::run()
 
 	if (m_canClick)
 	{
-		if ((isMouseInRect(InputManager::m_mouseCoor, m_searchBox.rect) && InputManager::isMousePressed() && m_draw) || isKeyPressed(SDL_SCANCODE_RETURN))
+		if (m_canClick)
 		{
-			m_productToSearch = m_productField.getValue();
-
-			if (m_productToSearch[0] == char(32))
+			if ((isMouseInRect(InputManager::m_mouseCoor, m_searchBox.rect) && InputManager::isMousePressed() && m_draw) || 
+				(isKeyPressed(SDL_SCANCODE_RETURN) && m_productField.getValue() != string(1, char(32))))
 			{
-				m_productToSearch.erase(0, 1);
+				m_productToSearch = m_productField.getValue();
+
+				if (m_productToSearch[0] == char(32))
+				{
+					m_productToSearch.erase(0, 1);
+				}
+
+				if (searchProduct(toLower(m_productToSearch)) == -1)
+				{
+					m_popUp = new PopUp();
+
+					m_popUp->init();
+
+					m_canClick = false;
+				}
+
+				m_productField.stopInput();
+
+				m_productField.setText(string(1, char(32)));
+
+				changeTexture(m_searchBoxText);
 			}
-
-			if (searchProduct(toLower(m_productToSearch)) == -1)
-			{
-				m_popUp = new PopUp();
-
-				m_popUp->init();
-
-				m_canClick = false;
-			}
-
-			m_productField.setText(string(1, char(32)));
-
-			changeTexture(m_searchBoxText);
 		}
 	}
 

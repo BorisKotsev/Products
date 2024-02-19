@@ -38,12 +38,12 @@ private:
 	string m_productToSearch;
 
 	int searchProduct(string product);
+
 	void resetAll();
 
 	PopUp* m_popUp;
 
 	bool m_draw = false;
-
 	bool m_canClick = true;
 
 	SDL_Texture* m_temp;

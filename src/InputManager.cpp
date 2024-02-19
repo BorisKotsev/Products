@@ -62,8 +62,6 @@ void InputManager::handleInput()
 					m_textInput.erase(lastCharStart, m_textInput.size() - lastCharStart);
 				}
 				break;
-
-
 			default:
 				break;
 			}
