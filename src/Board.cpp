@@ -217,14 +217,15 @@ void Board::changeTexture(DrawableTwoTextures& obj)
 
 int Board::searchProduct(string product)
 {
-	/*for (const auto& [key, value] : m_products)
+	for (const auto& [key, value] : m_products)
 	{
 		if (product == key)
 		{	
 			changeTexture(m_zones[value - 1]);
 			return 1;
 		}
-	}*/
+	}
+
 	return -1;
 }
 
