@@ -29,6 +29,7 @@ private:
 	vector <DrawableTwoTextures> m_zones;
 
 	Drawable m_searchBox;
+	Drawable m_exitButton;
 	DrawableTwoTextures m_searchBoxText;
 
 	map<string, int> m_products;

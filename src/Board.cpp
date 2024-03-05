@@ -21,7 +21,7 @@ void Board::init()
 {
 	fstream stream;
 
-	string backgorundImg, tmp, search, productField, searchBox;
+	string backgorundImg, tmp, search, productField, searchBox, exitBtn;
 
 	stream.open(CONFIG_FOLDER + "boardInit.txt");
 
@@ -30,10 +30,12 @@ void Board::init()
 	stream >> tmp >> search;
 	stream >> tmp >> productField;
 	stream >> tmp >> searchBox;
+	stream >> tmp >> exitBtn >> m_exitButton.rect.x >> m_exitButton.rect.y >> m_exitButton.rect.w >> m_exitButton.rect.h;
 
 	stream.close();
 
 	m_background = loadTexture(backgorundImg);
+	m_exitButton.texture = loadTexture(exitBtn);
 
 	loadZones();
 
@@ -51,6 +53,12 @@ void Board::init()
 void Board::run()
 {
 	drawObject(m_background);
+	drawObject(m_exitButton);
+
+	if (isMouseInRect(InputManager::m_mouseCoor, m_exitButton.rect) && InputManager::isMousePressed())
+	{
+		world.m_stateManager.changeGameState(GAME_STATE::NONE);
+	}
 
 	drawZones();
 

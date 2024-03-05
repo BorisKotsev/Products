@@ -3,3 +3,4 @@ SearchRect: 1545 900 250 125
 SearchImg: Search.bmp
 ProductField: enterProduct.txt
 SearchBox: SearchBox.bmp
+ExitBtnInfp: Exit.bmp 1800 20 80 80
