@@ -14,6 +14,7 @@ static string CONFIG_FOLDER = "config\\";
 static string SOUND_FOLDER = "sound\\";
 static string NORMAL_FOLDER = "normal\\";
 static string RED_FOLDER = "red\\";
+static string YELLOW_FOLDER = "yellow\\";
 static string FONT_FOLDER = "ttf\\";
 
 struct int2
@@ -183,6 +184,7 @@ struct DrawableSrcRect : Drawable
 struct DrawableTwoTextures : Drawable
 {
 	SDL_Texture* texture2;
+	SDL_Texture* texture3;
 	SDL_Texture* copy;
 };
 

@@ -43,6 +43,7 @@ void Board::init()
 	m_searchBoxText.texture = loadTexture(searchBox);
 
 	loadProducts();
+	loadDiscountProducts();
 
 	m_productField.init(productField, "");
 	m_searchBoxText.rect = m_productField.getRect();
@@ -69,33 +70,30 @@ void Board::run()
 
 	if (m_canClick)
 	{
-		if (m_canClick)
+		if ((isMouseInRect(InputManager::m_mouseCoor, m_searchBox.rect) && InputManager::isMousePressed() && m_draw) || 
+			(isKeyPressed(SDL_SCANCODE_RETURN) && m_productField.getValue() != string(1, char(32))))
 		{
-			if ((isMouseInRect(InputManager::m_mouseCoor, m_searchBox.rect) && InputManager::isMousePressed() && m_draw) || 
-				(isKeyPressed(SDL_SCANCODE_RETURN) && m_productField.getValue() != string(1, char(32))))
+			m_productToSearch = m_productField.getValue();
+
+			if (m_productToSearch[0] == char(32))
 			{
-				m_productToSearch = m_productField.getValue();
-
-				if (m_productToSearch[0] == char(32))
-				{
-					m_productToSearch.erase(0, 1);
-				}
-
-				if (searchProduct(toLower(m_productToSearch)) == -1)
-				{
-					m_popUp = new PopUp();
-
-					m_popUp->init();
-
-					m_canClick = false;
-				}
-
-				m_productField.stopInput();
-
-				m_productField.setText(string(1, char(32)));
-
-				changeTexture(m_searchBoxText);
+				m_productToSearch.erase(0, 1);
 			}
+
+			if (searchProduct(m_productToSearch) == -1)
+			{
+				m_popUp = new PopUp();
+
+				m_popUp->init();
+
+				m_canClick = false;
+			}
+
+			m_productField.stopInput();
+
+			m_productField.setText(string(1, char(32)));
+
+			changeTexture(m_searchBoxText);
 		}
 	}
 
@@ -119,7 +117,7 @@ void Board::run()
 		{
 			if (isMouseInRect(InputManager::m_mouseCoor, m_productField.getRect()))
 			{
-				int tmp = searchProduct(toLower(m_productToSearch));
+				int tmp = searchProduct(m_productToSearch);
 				resetAll();
 				m_productField.setText(string(1, char(32)));
 				changeTexture(m_searchBoxText);
@@ -171,15 +169,17 @@ void Board::loadZones()
 
 	stream.open(CONFIG_FOLDER + "zonesInfo.txt");
 
+	DrawableTwoTextures _zone;
+
 	while (!stream.eof())
 	{
-		DrawableTwoTextures _zone;
-
 		stream >> tmp >> _zone.rect.x >> _zone.rect.y >> _zone.rect.w >> _zone.rect.h;
 
 		_zone.texture = loadTexture(NORMAL_FOLDER + tmp + ".bmp");
 
 		_zone.texture2 = loadTexture(RED_FOLDER + tmp + ".bmp");
+
+		_zone.texture3 = loadTexture(YELLOW_FOLDER + tmp + ".bmp");
 
 		_zone.copy = _zone.texture;
 
@@ -187,6 +187,14 @@ void Board::loadZones()
 	}
 
 	stream.close();
+
+	/*for(int i = 0; i < m_zones.size(); i++)
+	{
+		cout << i << " " << m_zones[i].rect.x << " " << m_zones[i].rect.y << " " << m_zones[i].rect.w << " " << m_zones[i].rect.h << endl;
+		cout << i << " " << m_zones[i].texture << " " << m_zones[i].texture2 << " " << m_zones[i].texture3 << endl << endl;
+	}
+
+	cout << m_zones.size() << endl;*/
 }
 
 void Board::loadProducts()
@@ -216,6 +224,33 @@ void Board::loadProducts()
 	}*/
 }
 
+void Board::loadDiscountProducts()
+{
+	fstream stream;
+
+	string key;
+
+	int value;
+	stream.open(CONFIG_FOLDER + "discountProducts.txt");
+
+	while (stream >> value)
+	{
+		getline(stream >> ws, key);
+
+		key.erase(0, key.find_first_not_of(" \t\n\r"));
+		key.erase(key.find_last_not_of(" \t\n\r") + 1);
+
+		m_discountProducts[key] = value;
+	}
+
+	stream.close();
+
+	/*for (const auto& product : m_discountProducts)
+	{
+		cout << "Key: " << product.first << ", Value: " << product.second << endl;
+	}*/
+}
+
 void Board::changeTexture(DrawableTwoTextures& obj)
 {
 	SDL_Texture* tmp = obj.texture;
@@ -223,13 +258,39 @@ void Board::changeTexture(DrawableTwoTextures& obj)
 	obj.texture2 = tmp;
 }
 
+void Board::changeDiscountTexture(DrawableTwoTextures& obj)
+{
+	SDL_Texture* tmp = obj.texture;
+	obj.texture = obj.texture3;
+	obj.texture3 = tmp;
+}
+
 int Board::searchProduct(string product)
 {
+	if(searchDiscountProduct(product) == 1)
+	{
+		return 1;
+	}
+
 	for (const auto& [key, value] : m_products)
 	{
 		if (product == key)
 		{	
 			changeTexture(m_zones[value - 1]);
+			return 1;
+		}
+	}
+
+	return -1;
+}
+
+int Board::searchDiscountProduct(string product)
+{
+	for (const auto& [key, value] : m_discountProducts)
+	{
+		if (product == key)
+		{
+			changeDiscountTexture(m_zones[value - 1]);
 			return 1;
 		}
 	}

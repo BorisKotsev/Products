@@ -24,7 +24,9 @@ private:
 
 	void loadZones();
 	void loadProducts();
+	void loadDiscountProducts();
 	void changeTexture(DrawableTwoTextures& obj);
+	void changeDiscountTexture(DrawableTwoTextures& obj);
 
 	vector <DrawableTwoTextures> m_zones;
 
@@ -33,12 +35,14 @@ private:
 	DrawableTwoTextures m_searchBoxText;
 
 	map<string, int> m_products;
+	map<string, int> m_discountProducts;
 
 	InputField m_productField;
 
 	string m_productToSearch;
 
 	int searchProduct(string product);
+	int searchDiscountProduct(string product);
 
 	void resetAll();
 

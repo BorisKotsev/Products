@@ -44,13 +44,3 @@ bool collRectRect(SDL_Rect rect1, SDL_Rect rect2)
 		return true;
 	}
 }
-
-string toLower(string& str)
-{
-	for (int i = 0; i < str.length(); i++)
-	{
-		str[i] = tolower(str[i]);
-	}
-
-	return str;
-}
